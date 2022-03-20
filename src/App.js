@@ -15,7 +15,7 @@ class BooksApp extends Component {
     return (
       <div className="app">
         <Routes>
-          <Route exact path="/" element={<BookList />} />
+          <Route exact path="/" element={<BookList bookshelves={this.bookshelves}/>} />
           <Route path="/search" element={<BookSearch />} />
         </Routes>
       </div>
@@ -83,43 +83,13 @@ class BookShelfChanger extends Component {
 
 class BookList extends Component {
   render() {
+    const {bookshelves} = this.props;
     return (
       <div className="list-books">
         <div className="list-books-title">
           <h1>MyReads</h1>
         </div>
-        <div className="list-books-content">
-          <div>
-            <div className="bookshelf">
-              <h2 className="bookshelf-title">Currently Reading</h2>
-              <div className="bookshelf-books">
-                <ol className="books-grid">
-                  <Book book={{}} />
-                  <Book book={{}} />
-                </ol>
-              </div>
-            </div>
-            <div className="bookshelf">
-              <h2 className="bookshelf-title">Want to Read</h2>
-              <div className="bookshelf-books">
-                <ol className="books-grid">
-                  <Book book={{}} />
-                  <Book book={{}} />
-                </ol>
-              </div>
-            </div>
-            <div className="bookshelf">
-              <h2 className="bookshelf-title">Read</h2>
-              <div className="bookshelf-books">
-                <ol className="books-grid">
-                <Book book={{}} />
-                <Book book={{}} />
-                <Book book={{}} />
-                </ol>
-              </div>
-            </div>
-          </div>
-        </div>
+        <Bookcase bookshelves={bookshelves} />
         <div className="open-search">
           <Link to="search">
             <button>Add a Book</button>
