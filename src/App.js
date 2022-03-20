@@ -5,6 +5,12 @@ import './App.css'
 
 class BooksApp extends Component {
 
+  bookshelves = [
+    {key: 'currentlyReading', name: 'Currently Reading'},
+    {key: 'wantToRead', name: 'Want To Read'},
+    {key: 'read', name: 'Read'}
+  ]
+
   render() {
     return (
       <div className="app">
@@ -15,6 +21,32 @@ class BooksApp extends Component {
       </div>
     )
   }
+}
+
+const Bookcase = props => {
+  const {bookshelves} = props;
+  return (
+    <div className="list-bookcase">
+      <div>
+        {bookshelves.map(shelf => (
+          <Bookshelf key={shelf.key} shelf={shelf} />
+        ))}
+      </div>
+    </div>
+  )
+}
+
+const Bookshelf = props => {
+  const {shelf} = props
+  return (
+    <div className="bookshelf">
+      <h2 className="bookshelf-title">{shelf.name}</h2>
+      <div className="bookshelf-books"></div>
+      <ol className="books-grid">
+        <Book book={{}} />
+      </ol>
+    </div>
+  )
 }
 
 const Book = props => {
