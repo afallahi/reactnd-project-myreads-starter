@@ -5,13 +5,13 @@ import OpenSearchButton from './OpenSearchButton'
 
 class BookList extends Component {
     render() {
-      const {bookshelves, books} = this.props;
+      const {bookshelves, books, onMove} = this.props;
       return (
         <div className="list-books">
           <div className="list-books-title">
             <h1>MyReads</h1>
           </div>
-          <Bookcase bookshelves={bookshelves} books={books} />
+          <Bookcase bookshelves={bookshelves} books={books} onMove={onMove} />
           <OpenSearchButton />
         </div>
       )

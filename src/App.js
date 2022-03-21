@@ -38,16 +38,34 @@ class BooksApp extends Component {
     }
   }
 
+  bookMove = (book, shelf) => {
+    const booksUpdate = this.state.books.map(aBook => {
+      if(aBook.id === book.id) {
+        aBook.shelf = shelf
+      }
+      return aBook
+    })
+
+    this.setState({
+      books: booksUpdate
+    })
+  }
+
   render() {
     const {books, searchBooks} = this.state
     return (
       <div className="app">
         <Routes>
-          <Route exact path="/" element={<BookList bookshelves={this.bookshelves} books={books} />} />
+          <Route exact path="/" element={<BookList 
+                                          bookshelves={this.bookshelves} 
+                                          books={books} 
+                                          onMove={this.bookMove}
+                                          />} />
           <Route path="/search" element={<BookSearch 
                                           books={searchBooks} 
                                           onSearch={this.bookSearchQuery} 
                                           onVoidSearch={this.voidSearch}
+                                          onMove={this.bookMove}
                                           />} />
         </Routes>
       </div>

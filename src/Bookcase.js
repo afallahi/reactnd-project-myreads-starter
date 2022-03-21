@@ -3,12 +3,12 @@ import Bookshelf from './Bookshelf'
 
 
 const Bookcase = props => {
-    const {bookshelves, books} = props;
+    const {bookshelves, books, onMove} = props;
     return (
       <div className="list-bookcase">
         <div>
           {bookshelves.map(shelf => (
-            <Bookshelf key={shelf.key} shelf={shelf} books={books} />
+            <Bookshelf key={shelf.key} shelf={shelf} books={books} onMove={onMove} />
           ))}
         </div>
       </div>
