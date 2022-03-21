@@ -118,10 +118,11 @@ class BookList extends Component {
 
 class BookSearch extends Component {
   render() {
+    const { books } = this.props
     return (
       <div className="search-books">
         <SearchBooksBar />
-        <SearchBookResults />
+        <SearchBookResults books={books} />
       </div>
     )
   }
@@ -166,10 +167,13 @@ class SearchBooksBar extends Component {
 }
 
 const SearchBookResults = props => {
+  const {books} = props
   return (
     <div className="search-books-results">
       <ol className="books-grid">
-        <Book />
+        {books.map(book => (
+          <Book key={book.id} book={book} shelf="none" />
+        ))}
       </ol>
   </div>
   )
