@@ -7,11 +7,11 @@ const Book = props => {
       <li>
         <div className="book">
           <div className="book-top">
-            <div className="book-cover" style={{ width: 128, height: 192, backgroundImage: `url(${book.imageLinks.thumbnail})`, }} />
+            <div className="book-cover" style={{ width: 128, height: 192, backgroundImage: `url(${book.imageLinks && book.imageLinks.thumbnail})`, }} />
               <BookShelfChanger book={book} shelf={shelf} onMove={onMove} />
           </div>
           <div className="book-title">{book.title}</div>
-          <div className="book-authors">{book.authors}</div>
+          <div className="book-authors">{book.authors && book.authors.join(', ')}</div>
         </div>
       </li>
     )

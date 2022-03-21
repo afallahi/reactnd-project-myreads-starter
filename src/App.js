@@ -14,13 +14,13 @@ class BooksApp extends Component {
   ]
 
   state = {
-    books: [],
+    existingBooks: [],
     searchBooks: []
   }
 
   componentDidMount = () => {
     BooksAPI.getAll().then(books => {
-      this.setState({books: books})
+      this.setState({existingBooks: books})
     })
   }
 
@@ -46,30 +46,36 @@ class BooksApp extends Component {
     BooksAPI.update(book, shelf).then(books => {
     })
 
-    const booksUpdate = this.state.books.map(aBook => {
+    let booksUpdate = this.state.existingBooks.map(aBook => {
       if(aBook.id === book.id) {
         aBook.shelf = shelf
       }
       return aBook
     })
 
+    if(shelf !== 'none') {
+      book.shelf = shelf
+      booksUpdate = booksUpdate.concat(book)
+    }
+
     this.setState({
-      books: booksUpdate
+      existingBooks: booksUpdate
     })
   }
 
   render() {
-    const {books, searchBooks} = this.state
+    const {existingBooks, searchBooks} = this.state
     return (
       <div className="app">
         <Routes>
           <Route exact path="/" element={<BookList 
                                           bookshelves={this.bookshelves} 
-                                          books={books} 
+                                          books={existingBooks} 
                                           onMove={this.bookMove}
                                           />} />
           <Route path="/search" element={<BookSearch 
-                                          books={searchBooks} 
+                                          existingBooks={existingBooks} 
+                                          searchBooks={searchBooks}
                                           onSearch={this.bookSearchQuery} 
                                           onVoidSearch={this.voidSearch}
                                           onMove={this.bookMove}

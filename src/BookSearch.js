@@ -5,11 +5,11 @@ import SearchBooksInputWrapper from './SearchBooksInputWrapper'
 
 class BookSearch extends Component {
     render() {
-      const { books, onSearch, onVoidSearch } = this.props
+      const { existingBooks, searchBooks, onSearch, onVoidSearch, onMove } = this.props
       return (
         <div className="search-books">
           <SearchBooksBar onSearch={onSearch} onVoidSearch={onVoidSearch} />
-          <SearchBookResults books={books} />
+          <SearchBookResults existingBooks={existingBooks} searchBooks={searchBooks} onMove={onMove} />
         </div>
       )
     }
@@ -26,12 +26,22 @@ class BookSearch extends Component {
   }
   
   const SearchBookResults = props => {
-    const {books} = props
+    const {existingBooks, searchBooks, onMove} = props
+    console.log(existingBooks)
+    const booksUpdate = searchBooks.map(book => {
+        existingBooks.map(otherBook => {
+            if(book.id === otherBook.id) {
+                book.shelf = otherBook.shelf
+            }
+            return otherBook
+        });
+        return book
+    });
     return (
       <div className="search-books-results">
         <ol className="books-grid">
-          {books.map(book => (
-            <Book key={book.id} book={book} shelf="none" />
+          {booksUpdate.map(book => (
+            <Book key={book.id} book={book} shelf={book.shelf ? book.shelf : "none"} onMove={onMove} />
           ))}
         </ol>
     </div>
