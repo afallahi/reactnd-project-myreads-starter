@@ -97,5 +97,5 @@ For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
 * Add Routeing
 * Refactor the starter code for better readability and easier to work with down the road. refactored both BookList and BookSearch pages.
 * Get Book data `https://reactnd-books-api.udacity.com/books`
-
+* Show static books in BookList and Search pages
  
