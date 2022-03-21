@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Route, Routes, Link } from 'react-router-dom'
 import AllBooks from './books'
-// import * as BooksAPI from './BooksAPI'
+import * as BooksAPI from './BooksAPI'
 import './App.css'
 
 class BooksApp extends Component {
@@ -13,16 +13,39 @@ class BooksApp extends Component {
   ]
 
   state = {
-    books: AllBooks
+    books: AllBooks,
+    searchBooks: []
+  }
+
+  voidSearch = () => {
+    this.setState({searchBooks: []})
+  }
+
+  bookSearchQuery = query => {
+    if(query.length <= 0) {
+      this.setState({searchBooks: []})
+    } else {
+      BooksAPI.search(query).then(books => {
+        if(books.error) {
+          this.setState({searchBooks: []})
+        } else {
+          this.setState({searchBooks: books})
+        }
+      })  
+    }
   }
 
   render() {
-    const {books} = this.state
+    const {books, searchBooks} = this.state
     return (
       <div className="app">
         <Routes>
           <Route exact path="/" element={<BookList bookshelves={this.bookshelves} books={books} />} />
-          <Route path="/search" element={<BookSearch books={books} />} />
+          <Route path="/search" element={<BookSearch 
+                                          books={searchBooks} 
+                                          onSearch={this.bookSearchQuery} 
+                                          onVoidSearch={this.voidSearch}
+                                          />} />
         </Routes>
       </div>
     )
@@ -69,7 +92,7 @@ const Book = props => {
             <BookShelfChanger book={book} shelf={shelf} />
         </div>
         <div className="book-title">{book.title}</div>
-        <div className="book-authors">{book.authors.join(', ')}</div>
+        <div className="book-authors">{book.authors}</div>
       </div>
     </li>
   )
@@ -118,52 +141,61 @@ class BookList extends Component {
 
 class BookSearch extends Component {
   render() {
-    const { books } = this.props
+    const { books, onSearch, onVoidSearch } = this.props
     return (
       <div className="search-books">
-        <SearchBooksBar />
+        <SearchBooksBar onSearch={onSearch} onVoidSearch={onVoidSearch} />
         <SearchBookResults books={books} />
       </div>
     )
   }
 }
 
-const CloseSearchButton = () => {
+const CloseSearchButton = props => {
+  const {onVoidSearch} = props
   return (
-    <Link to="/" className="close-search">
-      Close
+    <Link to="/">
+      <button className="close-search" onClick={onVoidSearch} >
+        Close
+      </button>
     </Link>
   )
 }
 
 class SearchBooksInputWrapper extends Component {
+  state = {
+    value: ''
+  }
+
+  didSearchChange = event => {
+    const eventVal = event.target.value
+    this.setState({value: eventVal}, () => {
+      this.props.onSearch(eventVal)
+    })
+  }
+
   render() {
     return (
       <div className="search-books-input-wrapper">
-        {/*
-              NOTES: The search from BooksAPI is limited to a particular set of search terms.
-              You can find these search terms here:
-              https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-              However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-              you don't find a specific author or title. Every search is limited by search terms.
-            */}
-        <input type="text" placeholder="Search by title or author" />
-
+        <input 
+          type="text" 
+          placeholder="Search by title or author" 
+          value={this.state.value}
+          onChange={this.didSearchChange}
+        />
       </div>
     )
   }
 }
 
-class SearchBooksBar extends Component {
-  render() {
+const SearchBooksBar = props => {
+  const {onSearch, onVoidSearch} = props;
     return (
       <div className="search-books-bar">
-        <CloseSearchButton />
-        <SearchBooksInputWrapper />
+        <CloseSearchButton onVoidSearch={onVoidSearch} />
+        <SearchBooksInputWrapper onSearch={onSearch} />
     </div>
-    )
-  }
+    );
 }
 
 const SearchBookResults = props => {
