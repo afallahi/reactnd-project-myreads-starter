@@ -1,5 +1,4 @@
-{
-    "books": [
+const AllBooks = [
         {
             "title": "The Linux Command Line",
             "subtitle": "A Complete Introduction",
@@ -319,5 +318,6 @@
             "id": "1wy49i-gQjIC",
             "shelf": "read"
         }
-    ]
-}
+    ];
+
+    export default AllBooks;

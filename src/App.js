@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Route, Routes, Link } from 'react-router-dom'
+import AllBooks from './books'
 // import * as BooksAPI from './BooksAPI'
 import './App.css'
 
@@ -11,12 +12,17 @@ class BooksApp extends Component {
     {key: 'read', name: 'Read'}
   ]
 
+  state = {
+    books: AllBooks
+  }
+
   render() {
+    const {books} = this.state
     return (
       <div className="app">
         <Routes>
-          <Route exact path="/" element={<BookList bookshelves={this.bookshelves}/>} />
-          <Route path="/search" element={<BookSearch />} />
+          <Route exact path="/" element={<BookList bookshelves={this.bookshelves} books={books} />} />
+          <Route path="/search" element={<BookSearch books={books} />} />
         </Routes>
       </div>
     )
@@ -24,12 +30,12 @@ class BooksApp extends Component {
 }
 
 const Bookcase = props => {
-  const {bookshelves} = props;
+  const {bookshelves, books} = props;
   return (
     <div className="list-bookcase">
       <div>
         {bookshelves.map(shelf => (
-          <Bookshelf key={shelf.key} shelf={shelf} />
+          <Bookshelf key={shelf.key} shelf={shelf} books={books} />
         ))}
       </div>
     </div>
@@ -37,14 +43,16 @@ const Bookcase = props => {
 }
 
 const Bookshelf = props => {
-  const {shelf} = props
+  const {shelf, books} = props
+  const shelfBooksList = books
   return (
     <div className="bookshelf">
       <h2 className="bookshelf-title">{shelf.name}</h2>
-      <div className="bookshelf-books"></div>
-      <ol className="books-grid">
-        <Book book={{}} />
-      </ol>
+      <div className="bookshelf-books">
+        <ol className="books-grid">
+          <Book book={{}} />
+        </ol>
+      </div>
     </div>
   )
 }
@@ -55,11 +63,11 @@ const Book = props => {
     <li>
       <div className="book">
         <div className="book-top">
-          <div className="book-cover" style={{ width: 128, height: 192, backgroundImage: 'url("http://books.google.com/books/content?id=32haAAAAMAAJ&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE72yckZ5f5bDFVIf7BGPbjA0KYYtlQ__nWB-hI_YZmZ-fScYwFy4O_fWOcPwf-pgv3pPQNJP_sT5J_xOUciD8WaKmevh1rUR-1jk7g1aCD_KeJaOpjVu0cm_11BBIUXdxbFkVMdi&source=gbs_api")' }}></div>
-            <BookShelfChanger />
+          <div className="book-cover" style={{ width: 128, height: 192, backgroundImage: 'url(${book.imageLinks.thumbnail})' }}></div>
+            <BookShelfChanger book={book} />
         </div>
-        <div className="book-title">The Adventures of Tom Sawyer</div>
-        <div className="book-authors">Mark Twain</div>
+        <div className="book-title">book.title</div>
+        <div className="book-authors">book.authors</div>
       </div>
     </li>
   )
@@ -93,13 +101,13 @@ const OpenSearchButton = () => {
 
 class BookList extends Component {
   render() {
-    const {bookshelves} = this.props;
+    const {bookshelves, books} = this.props;
     return (
       <div className="list-books">
         <div className="list-books-title">
           <h1>MyReads</h1>
         </div>
-        <Bookcase bookshelves={bookshelves} />
+        <Bookcase bookshelves={bookshelves} books={books} />
         <OpenSearchButton />
       </div>
     )
