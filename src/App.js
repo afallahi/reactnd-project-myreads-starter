@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import { Route, Routes, Link } from 'react-router-dom'
-import AllBooks from './books'
 import * as BooksAPI from './BooksAPI'
 import BookSearch from './BookSearch'
-import Book from './Book'
 import BookList from './BookList'
 import './App.css'
 
@@ -16,8 +14,14 @@ class BooksApp extends Component {
   ]
 
   state = {
-    books: AllBooks,
+    books: [],
     searchBooks: []
+  }
+
+  componentDidMount = () => {
+    BooksAPI.getAll().then(books => {
+      this.setState({books: books})
+    })
   }
 
   voidSearch = () => {
@@ -39,6 +43,9 @@ class BooksApp extends Component {
   }
 
   bookMove = (book, shelf) => {
+    BooksAPI.update(book, shelf).then(books => {
+    })
+
     const booksUpdate = this.state.books.map(aBook => {
       if(aBook.id === book.id) {
         aBook.shelf = shelf
