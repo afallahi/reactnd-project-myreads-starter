@@ -27,7 +27,6 @@ class BookSearch extends Component {
   
   const SearchBookResults = props => {
     const {existingBooks, searchBooks, onMove} = props
-    console.log(existingBooks)
     const booksUpdate = searchBooks.map(book => {
         existingBooks.map(otherBook => {
             if(book.id === otherBook.id) {

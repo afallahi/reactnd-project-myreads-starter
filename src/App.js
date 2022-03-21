@@ -46,12 +46,7 @@ class BooksApp extends Component {
     BooksAPI.update(book, shelf).then(books => {
     })
 
-    let booksUpdate = this.state.existingBooks.map(aBook => {
-      if(aBook.id === book.id) {
-        aBook.shelf = shelf
-      }
-      return aBook
-    })
+    let booksUpdate = this.state.existingBooks.filter(aBook => aBook.id !== book.id)
 
     if(shelf !== 'none') {
       book.shelf = shelf
