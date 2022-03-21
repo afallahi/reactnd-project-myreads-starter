@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import CloseSearchButton from './CloseSearchButton'
 import Book from './Book'
+import SearchBooksInputWrapper from './SearchBooksInputWrapper'
 
 class BookSearch extends Component {
     render() {
@@ -35,45 +36,7 @@ class BookSearch extends Component {
         </ol>
     </div>
     )
-  }
-  
-  const CloseSearchButton = props => {
-    const {onVoidSearch} = props
-    return (
-      <Link to="/">
-        <button className="close-search" onClick={onVoidSearch} >
-          Close
-        </button>
-      </Link>
-    )
-  }
-  
-
-  class SearchBooksInputWrapper extends Component {
-    state = {
-      value: ''
-    }
-  
-    didSearchChange = event => {
-      const eventVal = event.target.value
-      this.setState({value: eventVal}, () => {
-        this.props.onSearch(eventVal)
-      })
-    }
-  
-    render() {
-      return (
-        <div className="search-books-input-wrapper">
-          <input 
-            type="text" 
-            placeholder="Search by title or author" 
-            value={this.state.value}
-            onChange={this.didSearchChange}
-          />
-        </div>
-      )
-    }
-  }
+  }  
   
 
   export default BookSearch
