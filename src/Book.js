@@ -1,8 +1,7 @@
 import React from 'react'
 import BookShelfChanger from './BookShelfChanger'
 
-const Book = props => {
-    const { book, shelf, onMove } = props;
+const Book = ({ book, shelf, onMove }) => {    
     return (
       <li>
         <div className="book">
@@ -17,4 +16,4 @@ const Book = props => {
     )
   }
 
- export default Book 
+ export default Book
