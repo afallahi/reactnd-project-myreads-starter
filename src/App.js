@@ -5,22 +5,26 @@ import BookSearch from './BookSearch'
 import BookList from './BookList'
 import './App.css'
 
-class BooksApp extends Component {
+const bookshelves = [
+  {key: 'currentlyReading', name: 'Currently Reading'},
+  {key: 'wantToRead', name: 'Want To Read'},
+  {key: 'read', name: 'Read'}
+]
 
-  bookshelves = [
-    {key: 'currentlyReading', name: 'Currently Reading'},
-    {key: 'wantToRead', name: 'Want To Read'},
-    {key: 'read', name: 'Read'}
-  ]
+class BooksApp extends Component {
 
   state = {
     existingBooks: [],
-    searchBooks: []
+    searchBooks: [],
+    networkError: false
   }
 
   componentDidMount = () => {
     BooksAPI.getAll().then(books => {
       this.setState({existingBooks: books})
+    })
+    .catch(error => {
+      this.setState({networkError: true})
     })
   }
 
@@ -43,7 +47,9 @@ class BooksApp extends Component {
   }
 
   bookMove = (book, shelf) => {
-    BooksAPI.update(book, shelf).then(books => {
+    BooksAPI.update(book, shelf)
+    .catch(error => {
+      this.setState({networkError: true})
     })
 
     let booksUpdate = this.state.existingBooks.filter(aBook => aBook.id !== book.id)
@@ -59,12 +65,15 @@ class BooksApp extends Component {
   }
 
   render() {
-    const {existingBooks, searchBooks} = this.state
+    const {existingBooks, searchBooks, networkError} = this.state
+    if(networkError) {
+      return <div>Network Error</div>
+    }
     return (
       <div className="app">
         <Routes>
           <Route exact path="/" element={<BookList 
-                                          bookshelves={this.bookshelves} 
+                                          bookshelves={bookshelves} 
                                           books={existingBooks} 
                                           onMove={this.bookMove}
                                           />} />

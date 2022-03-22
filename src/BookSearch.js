@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import CloseSearchButton from './CloseSearchButton'
 import Book from './Book'
 import SearchBooksInputWrapper from './SearchBooksInputWrapper'
+import { Link } from 'react-router-dom'
 
 class BookSearch extends Component {
     render() {
@@ -47,6 +47,16 @@ class BookSearch extends Component {
     )
   }  
   
+  const CloseSearchButton = props => {
+    const {onVoidSearch} = props
+    return (
+      <Link to="/">
+        <button className="close-search" onClick={onVoidSearch} >
+          Close
+        </button>
+      </Link>
+    )
+  }
 
   export default BookSearch
   

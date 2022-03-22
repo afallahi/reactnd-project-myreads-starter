@@ -8,6 +8,7 @@ Of course, you are free to start this project from scratch if you wish! Just be 
 
 To get started developing right away:
 
+* Install React Router `npm install --save react-router-dom`
 * install all project dependencies with `npm install`
 * start the development server with `npm start`
 
@@ -91,11 +92,11 @@ This repository is the starter code for _all_ Udacity students. Therefore, we mo
 
 For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
 
-## Development
+## Development 
 
 * Install React Router `npm install --save react-router-dom`
 * Add Routeing
 * Refactor the starter code for better readability and easier to work with down the road. refactored both BookList and BookSearch pages.
 * Get Book data `https://reactnd-books-api.udacity.com/books`
 * Show static books in BookList and Search pages
- 
+* Catch network call errors 
